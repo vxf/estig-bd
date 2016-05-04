@@ -41,5 +41,49 @@ select conta.cod_agencia, max(conta.saldo) as maximo, min(conta.saldo) as minimo
 	group by conta.cod_agencia
 	having count(conta.cod_conta) < 3
 
-	
+--9
+select distinct cliente_conta.cod_cliente from cliente_conta
 
+--10
+select count(cliente_conta.cod_conta) from cliente_conta
+	where cliente_conta.cod_cliente = 1
+
+--11
+select cliente_conta.cod_cliente, sum(conta.saldo) as saldo from conta, emprestimo, cliente_conta
+	where conta.cod_conta = emprestimo.cod_conta
+	and conta.cod_conta = cliente_conta.cod_conta
+	group by cliente_conta.cod_cliente
+
+--12
+select sum(conta.saldo) as total from conta, emprestimo
+	where conta.cod_conta = emprestimo.cod_conta
+
+--13a
+select max(emprestimo.valor_empr) as max_empr from emprestimo
+
+--13b
+select cliente_conta.cod_cliente, sum(conta.saldo) as saldo from cliente_conta, conta
+	where conta.cod_conta=cliente_conta.cod_conta
+	group by cliente_conta.cod_cliente
+
+--13
+select * from 
+	(select cliente_conta.cod_cliente, sum(conta.saldo) as saldo from cliente_conta, conta
+		where conta.cod_conta=cliente_conta.cod_conta
+		group by cliente_conta.cod_cliente) as b
+	where b.saldo > (select max(emprestimo.valor_empr) as max_empr from emprestimo)
+
+--15
+select cliente_conta.cod_cliente from conta, cliente_conta
+	where conta.cod_conta=cliente_conta.cod_conta
+	and conta.cod_agencia = 2
+
+
+--derp
+/*
+select * from (select cliente_conta.cod_cliente as cod_cliente, sum(conta.saldo) as saldo, max(emprestimo.valor_empr) as max_empr from conta, emprestimo, cliente_conta
+		where conta.cod_conta = emprestimo.cod_conta
+		and conta.cod_conta = cliente_conta.cod_conta
+		group by cliente_conta.cod_cliente) as b 
+		where saldo > max_empr
+		*/
