@@ -35,3 +35,11 @@ select ag.cod_agencia, max(conta.saldo) as maximo, min(conta.saldo) as minimo, a
 	where ag.cod_agencia = conta.cod_agencia
 	and ag.nr_contas < 3
 	group by ag.cod_agencia
+
+--7'
+select conta.cod_agencia, max(conta.saldo) as maximo, min(conta.saldo) as minimo, avg(saldo) as media from conta
+	group by conta.cod_agencia
+	having count(conta.cod_conta) < 3
+
+	
+
